@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<HCIP.AjaxDataSetting>
+  <Data name="GetTableColumnList">
+    <SqlDefinition type="MySql" ConnStringName="backstage_connection">
+      <SqlCommand>
+        <![CDATA[
+      SELECT `TABLE_NAME` AS table_name,GROUP_CONCAT(COLUMN_NAME) as column_name FROM `information_schema`.`COLUMNS` <%= WHERE `TABLE_SCHEMA`=@@DBName@@%> GROUP BY TABLE_NAME;
+      ]]>
+      </SqlCommand>
+    </SqlDefinition>
+  </Data>
+</HCIP.AjaxDataSetting>

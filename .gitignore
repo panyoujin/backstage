@@ -3,3 +3,7 @@
 ################################################################################
 
 /BackstageSolution/.vs
+/BackstageSolution/Backstage.Models/bin/Debug/netcoreapp2.0
+/BackstageSolution/Backstage.Models/obj
+/BackstageSolution/Backstage.WebApi/bin/Debug/netcoreapp2.0
+/BackstageSolution/Backstage.WebApi/obj
