@@ -1,0 +1,107 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Table列表</title>
+    <link href="/Resource/Style/ivory.css?v=3" rel="stylesheet" type="text/css" />
+    <link href="/Resource/Style/main.css?v=3" rel="stylesheet" type="text/css" />
+    <link href="/Resource/Style/FortAwesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="/Resource/Script/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/Resource/Script/common.js?v=5"></script>
+    <link href="/Resource/Script/datetimepicker/datetimepicker.css" rel="stylesheet" />
+    <script type="text/javascript" src="/Resource/Script/datetimepicker/datetimepicker.js"></script>
+    <script type="text/javascript" src="/Resource/Script/page.js"></script>
+</head>
+
+<body>
+    <div id="contentheader">
+        <div id="contentheader_title">Table列表</div>
+        
+        <div style="clear:both;"></div>
+    </div>
+
+    <div id="contentsearch">
+        <label>表名</label><input type="text" placeholder="输入表名" id="TableName" maxlength="50" />
+        <label>列名</label><input type="text" placeholder="输入列名" id="ColumnName" maxlength="50" />
+        <button type="button" class="blue" style="float:right;" onclick="search();"><i class="fa fa-search"></i>&nbsp;查询</button>
+        <div class="clear"></div>
+    </div>
+
+    <div id="content">
+        <table border="1" cellpadding="0" cellspacing="0" class="table" id="dataList">
+            <thead>
+                <tr>
+                    <th width="5%">
+                        <i class='fa fa-plus thead-th-fonticon' onclick='showAllDetailTable(this)' title='全部展开'></i>
+                    </th>
+                    <th width="20%">表名</th>
+                    <th width="10%">行数</th>
+                    <th width="30%">描述</th>
+                    <!--<th width="30%">字段名</th>-->
+                    <th width="10%">操作</th>
+                    <th class="data-detail-th">字段名</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="paginationbox">
+
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        queryList(1);
+        //回车事件
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) {
+                search();
+            }
+        };
+    });
+    function Edit(tableName) {
+        $.Dialog('/System/TableColumnList.html?tableName=' + tableName, "Column", 800, 600);
+        //parent.gotoPage('/System/TableColumnList.html?tableName=' + tableName);
+    }
+    
+    var search = function () {
+        pageIndex = 1;
+        queryList(1);
+    };
+    var indexPage = function (index) { queryList(index); };
+    var queryList = function (index) {
+        $("#dataList tbody").html("<tr style='height:" + $("#dataList tbody").height() + "px'><td colspan='" + $("#dataList thead tr th").length + "'><i class='fa fa-spinner fa-pulse'></i></td></tr>");
+        var tableName = $.trim($("#TableName").val());
+        var columnName = $.trim($("#ColumnName").val());
+        $.ajaxJson("/api/sys/table", "get", { pageIndex: index, tableName: tableName, columnName: columnName },
+            function (result) {
+                if (result && result.ReturnData.length > 0) {
+                    var list = result.ReturnData;
+                    var html = "";
+                    for (var i = 0; i < list.length; i++) {
+                        html += "<tr " + (i % 2 == 1 ? "class='even'" : "") + ">";
+                        html += '<td style="cursor:pointer" onclick="showDetailTable(this)"><i class="fa fa-plus" ></i></td>';
+                        html += "<td>" + (list[i].TABLE_NAME ? list[i].TABLE_NAME : "") + "</td>";
+                        html += "<td>" + (list[i].TABLE_ROWS ? list[i].TABLE_ROWS : "") + "</td>";
+                        html += "<td>" + (list[i].TABLE_COMMENT ? list[i].TABLE_COMMENT : "") + "</td>";
+                        //html += "<td>" + (list[i].COLUMNS ? list[i].COLUMNS : "") + "</td>";
+                        html += "<td><a href='javascript:void(0);' onclick='Edit(\"" + list[i].TABLE_NAME + "\")' title='详情'>详情</a>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                        html += '<td class="data-detail-td">' + (list[i].COLUMNS ? list[i].COLUMNS : "") + '</td>';
+                        html += "</tr>";
+                    }
+                    $("#dataList tbody").html(html);
+                } else {
+                    $("#dataList tbody").html("<tr><td colspan='" + $("#dataList thead tr th").length + "'>没有任何数据</td></tr>");
+                }
+                $("#paginationbox").html($.InitPagin(index, 15, result.ListCount));
+            },
+
+            function () {
+                $("#paginationbox").html($.InitPagin(index, 15, 0));
+                $("#dataList tbody").html("<tr><td colspan='" + $("#dataList thead tr th").length + "'>网络故障，请稍候重试！</td></tr>");
+            }
+        );
+    };
+</script>

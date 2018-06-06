@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Web\Resource\Image\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\Resource\Image\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +16,56 @@
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Home\IndexPage.html" />
+    <None Include="wwwroot\Home\Login.html" />
+    <None Include="wwwroot\Index.html" />
+    <None Include="wwwroot\Resource\Script\abixTreeList\abixTreeList.css" />
+    <None Include="wwwroot\Resource\Script\abixTreeList\abixTreeList.js" />
+    <None Include="wwwroot\Resource\Script\autocompleter\jquery.autocomplete.css" />
+    <None Include="wwwroot\Resource\Script\autocompleter\jquery.autocomplete.js" />
+    <None Include="wwwroot\Resource\Script\common.js" />
+    <None Include="wwwroot\Resource\Script\datetimepicker\datetimepicker.css" />
+    <None Include="wwwroot\Resource\Script\datetimepicker\datetimepicker.js" />
+    <None Include="wwwroot\Resource\Script\highcharts\highcharts-zh_CN.js" />
+    <None Include="wwwroot\Resource\Script\highcharts\highcharts.js" />
+    <None Include="wwwroot\Resource\Script\highcharts\highstock.js" />
+    <None Include="wwwroot\Resource\Script\highcharts\modules\data.js" />
+    <None Include="wwwroot\Resource\Script\highcharts\modules\drilldown.js" />
+    <None Include="wwwroot\Resource\Script\highcharts\modules\exporting.js" />
+    <None Include="wwwroot\Resource\Script\highcharts\themes\grid-light.js" />
+    <None Include="wwwroot\Resource\Script\jquery.min.js" />
+    <None Include="wwwroot\Resource\Script\jquery.min.map" />
+    <None Include="wwwroot\Resource\Script\jquery.validate.js" />
+    <None Include="wwwroot\Resource\Script\jqueryupload\jqueryupload.js" />
+    <None Include="wwwroot\Resource\Script\json2.js" />
+    <None Include="wwwroot\Resource\Script\layer\extend\layer.ext.js" />
+    <None Include="wwwroot\Resource\Script\layer\layer.js" />
+    <None Include="wwwroot\Resource\Script\layer\skin\default\icon-ext.png" />
+    <None Include="wwwroot\Resource\Script\layer\skin\default\icon.png" />
+    <None Include="wwwroot\Resource\Script\layer\skin\default\loading-0.gif" />
+    <None Include="wwwroot\Resource\Script\layer\skin\default\loading-1.gif" />
+    <None Include="wwwroot\Resource\Script\layer\skin\default\loading-2.gif" />
+    <None Include="wwwroot\Resource\Script\layer\skin\layer.css" />
+    <None Include="wwwroot\Resource\Script\layer\skin\layer.ext.css" />
+    <None Include="wwwroot\Resource\Script\page.js" />
+    <None Include="wwwroot\Resource\Script\simplersa\simplersa.js" />
+    <None Include="wwwroot\Resource\Style\FortAwesome\css\font-awesome.css" />
+    <None Include="wwwroot\Resource\Style\FortAwesome\css\font-awesome.css.map" />
+    <None Include="wwwroot\Resource\Style\FortAwesome\css\font-awesome.min.css" />
+    <None Include="wwwroot\Resource\Style\FortAwesome\fonts\fontawesome-webfont.eot" />
+    <None Include="wwwroot\Resource\Style\FortAwesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\Resource\Style\FortAwesome\fonts\fontawesome-webfont.ttf" />
+    <None Include="wwwroot\Resource\Style\FortAwesome\fonts\fontawesome-webfont.woff" />
+    <None Include="wwwroot\Resource\Style\FortAwesome\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\Resource\Style\FortAwesome\fonts\FontAwesome.otf" />
+    <None Include="wwwroot\Resource\Style\ivory.css" />
+    <None Include="wwwroot\Resource\Style\main.css" />
+    <None Include="wwwroot\System\TableList.html" />
+    <None Include="wwwroot\System\UserAdd.html" />
+    <None Include="wwwroot\System\UserIndex.html" />
   </ItemGroup>
 
   <ItemGroup>

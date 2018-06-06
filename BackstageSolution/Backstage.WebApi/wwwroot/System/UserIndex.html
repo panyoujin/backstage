@@ -68,7 +68,7 @@
 
     function Delete(id) {
         $.confirm("是否确认删除?", function () {
-            $.ajaxJson("/System/UserDelete", { userId: id },
+            $.ajaxJson("/System/UserDelete", "post", { userId: id },
             function (result) {
                 queryList(1);
             },
@@ -83,7 +83,7 @@
     }
 
     function UpdateStatus(userId, status) {
-        $.ajaxJson("/System/UpdateUserStatus", { userId: userId, status: status },
+        $.ajaxJson("/System/UpdateUserStatus", "post", { userId: userId, status: status },
           function (result) {
               if (result.IsOk) {
                   var thisA = $("#" + userId + "");
@@ -112,7 +112,7 @@
         var phone = $.trim($("#Phone").val());
         var email = $.trim($("#Email").val());
         var status = $("#Status").val();
-        $.ajaxJson("/System/UserList", { pageIndex: index, nickName: nickName, phone: phone, email: email, status: status },
+        $.ajaxJson("/System/UserList", "post", { pageIndex: index, nickName: nickName, phone: phone, email: email, status: status },
             function (result) {
                 if (result && result.ReturnData.length > 0) {
                     var list = result.ReturnData;

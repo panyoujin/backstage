@@ -35,5 +35,15 @@ namespace Backstage.WebApi.Helper
             byte[] bytes = Encoding.UTF8.GetBytes(content);
             return Convert.ToBase64String(bytes);
         }
+        /// <summary>
+        /// 返回json
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static Microsoft.AspNetCore.Mvc.JsonResult ToJsonResult(this Microsoft.AspNetCore.Mvc.Controller controller, object result)
+        {
+            return controller.Json(result, new Newtonsoft.Json.JsonSerializerSettings());
+        }
     }
 }

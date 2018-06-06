@@ -18,7 +18,7 @@ namespace Backstage.WebApi.Controllers
         {
             var dic = this.Request.CreateDictionary();
             dic["DBName"] = "backstage";
-            var list = SQLHelperFactory.Instance.QueryForListByT<sys_table_column_model>("GetTableColumnList", dic);
+            var list = SQLHelperFactory.Instance.QueryForList("GetTableList", dic);
             return list;
         }
 

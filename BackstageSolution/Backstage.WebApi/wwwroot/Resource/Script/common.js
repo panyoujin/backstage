@@ -1,8 +1,13 @@
 ﻿//异步ajax操作,返回json结果集
-jQuery.ajaxJson = function (url, param, successCallBack, failCallBack) {
+jQuery.ajaxJson = function (url,type, param, successCallBack, failCallBack) {
     var UToken = sessionStorage["UToken"];
     url = url.indexOf("?") > 0 ? url + "&UToken=" + UToken : url + "?UToken=" + UToken;
-    $.ajax({ async: true, dataType: "json", type: 'post', url: url, timeout: 600000, data: param ? param : null,
+    if (!!!type) {
+        alert(type)
+        type = "post";
+    }
+    $.ajax({
+        async: true, dataType: "json", type: type, url: url, timeout: 600000, data: param ? param : null,
         success: function (jsonData) {
             if (jsonData.IsLogout) {
                 window.top.gotoLogin();
@@ -257,7 +262,12 @@ var resortSystemList = function (systemList) {
     } catch (e) { }
     return newSystemList;
 }
-
+//获取url中的参数
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]); return null; //返回参数值
+}
 //页面初始化时过滤权限
 //有些页面按钮是异步生成的，所以也要在异步请求成功，执行成功函数后，再次过滤权限。
 jQuery(document).ready(function () {

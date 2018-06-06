@@ -66,13 +66,13 @@
             return;
         }
         showloginButton(true);
-        $.ajaxJson("/Home/GetPublicKey", null,
+        $.ajaxJson("/Home/GetPublicKey", "post",null,
             function (result) {
                 if (result && result.IsOk && result.ReturnData) {
                     setMaxDigits(131);
                     var key = new RSAKeyPair(result.ReturnData.exponent, "", result.ReturnData.modulus);
                     password = encryptedString(key, base64encode(password));
-                    $.ajaxJson("/Home/Login", { account: account, password: password, code: code },
+                    $.ajaxJson("/Home/Login","post", { account: account, password: password, code: code },
                         function (result) {
                             if (result && result.IsOk) {
                                 if (result.ReturnData.IsMultiUserLogin == true) {

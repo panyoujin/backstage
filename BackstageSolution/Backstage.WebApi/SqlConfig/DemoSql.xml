@@ -1,10 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <HCIP.AjaxDataSetting>
+  
+  <Data name="GetTableList">
+    <SqlDefinition type="MySql" ConnStringName="backstage_connection">
+      <SqlCommand>
+        <![CDATA[
+      SELECT t.`TABLE_NAME`,t.`TABLE_ROWS`,t.`TABLE_COMMENT`,GROUP_CONCAT(c.`COLUMN_NAME`) AS COLUMNS
+      FROM `information_schema`.`TABLES` t
+      JOIN `information_schema`.`COLUMNS` c ON  c.`TABLE_NAME`=t.`TABLE_NAME` <%= AND c.`TABLE_SCHEMA`=@@DBName@@ %>
+      WHERE 1=1 <%= AND t.`TABLE_SCHEMA`=@@DBName@@%> <%= AND t.`TABLE_NAME` = @@TableName@@%> <%= AND c.`COLUMN_NAME` = @@ColumnName@@%> 
+      GROUP BY t.TABLE_NAME;
+      ]]>
+      </SqlCommand>
+    </SqlDefinition>
+  </Data>
+
   <Data name="GetTableColumnList">
     <SqlDefinition type="MySql" ConnStringName="backstage_connection">
       <SqlCommand>
         <![CDATA[
-      SELECT `TABLE_NAME` AS table_name,GROUP_CONCAT(COLUMN_NAME) as column_name FROM `information_schema`.`COLUMNS` <%= WHERE `TABLE_SCHEMA`=@@DBName@@%> GROUP BY TABLE_NAME;
+      SELECT c.`COLUMN_NAME`,c.`COLUMN_COMMENT`,c.`ORDINAL_POSITION`,c.`COLUMN_KEY`,c.`COLUMN_TYPE`,c.`DATA_TYPE`
+      FROM `information_schema`.`COLUMNS` c
+      WHERE c.`TABLE_SCHEMA`=@@DBName@@ <%= AND c.`TABLE_NAME` = @@TableName@@%> 
+      ORDER BY c.`ORDINAL_POSITION`;
       ]]>
       </SqlCommand>
     </SqlDefinition>
