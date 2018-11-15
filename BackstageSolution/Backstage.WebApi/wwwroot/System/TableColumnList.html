@@ -15,7 +15,9 @@
 
 <body>
     <div id="contentsearch">
-        <button type="button" class="blue" style="float:right;" onclick="search();"><i class="fa fa-search"></i>&nbsp;查询</button>
+        <button type="button" class="blue" style="float:right;" onclick="CreateTrigger();"><i class="fa fa-search"></i>&nbsp;生成触发器</button>
+
+        
         <button onclick="$.layerClose()" type="button"><i class="fa fa-times"></i>&nbsp;返回</button>
         <div class="clear"></div>
     </div>
@@ -52,10 +54,10 @@
                     var html = "";
                     for (var i = 0; i < list.length; i++) {
                         html += "<tr " + (i % 2 == 1 ? "class='even'" : "") + ">";
-                        html += "<td>" + (list[i].COLUMN_NAME ? list[i].COLUMN_NAME : "") + "</td>";
-                        html += "<td>" + (list[i].COLUMN_TYPE ? list[i].COLUMN_TYPE : "") + "</td>";
-                        html += "<td>" + (list[i].COLUMN_COMMENT ? list[i].COLUMN_COMMENT : "") + "</td>";
-                        html += "<td>" + (list[i].COLUMN_KEY ? list[i].COLUMN_KEY : "") + "</td>";
+                        html += "<td>" + (list[i].column_name ? list[i].column_name : "") + "</td>";
+                        html += "<td>" + (list[i].column_type ? list[i].column_type : "") + "</td>";
+                        html += "<td>" + (list[i].column_comment ? list[i].column_comment : "") + "</td>";
+                        html += "<td>" + (list[i].column_key ? list[i].column_key : "") + "</td>";
                         html += "</tr>";
                     }
                     $("#dataList tbody").html(html);
@@ -69,4 +71,28 @@
             }
         );
     };
+
+
+    function CreateTrigger() {
+        var tableName = getUrlParam("tableName");
+        $.ajaxJson("/api/sys/table", "post", { tableName: tableName },
+            function (result) {
+                if (result.IsOk) {
+                    alert(result.ReturnData.InsertTriggerPath)
+                    $("#contentsearch").append('&nbsp;&nbsp;<button onclick="ShowFile(\'trigger_' + tableName + '_insert\')" type="button"><i class="fa fa-download"></i>trigger_' + tableName + '_insert.sql</button>');
+                    $("#contentsearch").append('&nbsp;&nbsp;<button onclick="ShowFile(\'trigger_' + tableName + '_update_after\')" type="button"><i class="fa fa-download"></i>trigger_' + tableName + 'update_after.sql</button>');
+                    $("#contentsearch").append('&nbsp;&nbsp;<button class="yellow" onclick="ShowFile(\'trigger_' + tableName + '_delete\')" type="button"><i class="fa fa-download"></i>&nbsp;&nbsp;trigger_' + tableName + '_delete.sql</button>');
+                    
+                } else {
+                    $.alert(result.Message);
+                }
+            },
+            function () {
+                $.alert("网络故障，请稍候重试!");
+            });
+    }
+
+    function ShowFile(name) {
+        $.Dialog("/Resource/Download/Trigger/" + name + ".txt", name + ".sql", 800, 600);
+    }
 </script>

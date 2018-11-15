@@ -205,8 +205,12 @@ var showAllDetailTable = function (obj) {
     var tableObj = $(obj).parent().parent().parent().parent();
     if (tableObj != null && tableObj.length > 0) {
         tableObj.find("tbody tr").each(function () {
-            if (!$(this).hasClass('detail')) {
-                $(this).find("td:first").click();
+            try {
+                if (!$(this).hasClass('detail')) {
+                    $(this).find("td:first").click();
+                }
+            } catch (err) {
+                //console.log(err);
             }
         });
     }

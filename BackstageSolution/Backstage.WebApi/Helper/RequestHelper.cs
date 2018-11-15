@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,5 +46,7 @@ namespace Backstage.WebApi.Helper
         {
             return controller.Json(result, new Newtonsoft.Json.JsonSerializerSettings());
         }
+
+        public static string WebRootPath { get; set; }
     }
 }

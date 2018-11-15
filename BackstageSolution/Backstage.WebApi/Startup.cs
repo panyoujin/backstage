@@ -40,6 +40,7 @@ namespace Backstage.WebApi
             }
             app.UseStaticFiles();
             app.UseMvc();
+            Helper.RequestHelper.WebRootPath = env.WebRootPath;
         }
     }
 }

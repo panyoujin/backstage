@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SqlSetting>
+  
+  <Data name="GetDataDicList">
+    <SqlDefinition type="MySql" ConnStringName="backstage_connection">
+      <SqlCommand>
+        <![CDATA[
+      SELECT `ID` AS id,`DDParentID` AS parentId,`DDCode` AS `code`,`DDName` AS `name`,`DDDesc` AS `desc`,`DDStatus` AS `status`,`DDSort` AS sort,`CreateTime` AS createTime,`CreateUser` AS createUser,`UpdateTime` AS updateTime,`UpdateUser` AS updateUser 
+      FROM `P_DataDic` WHERE DDStatus = 1  <%= AND `DDCode` = @@Code@@%> <%= AND `DDName` = @@Name@@%> ORDER BY DDParentID,DDSort,ID
+      ]]>
+      </SqlCommand>
+    </SqlDefinition>
+  </Data>  
+</SqlSetting>

@@ -16,14 +16,17 @@
 <body>
     <div id="contentheader">
         <div id="contentheader_title">Table列表</div>
-        
+        <div id="contentheader_button">
+            
+        </div>
         <div style="clear:both;"></div>
     </div>
 
     <div id="contentsearch">
         <label>表名</label><input type="text" placeholder="输入表名" id="TableName" maxlength="50" />
         <label>列名</label><input type="text" placeholder="输入列名" id="ColumnName" maxlength="50" />
-        <button type="button" class="blue" style="float:right;" onclick="search();"><i class="fa fa-search"></i>&nbsp;查询</button>
+        <button type="button" class="blue" style="float:right; margin-right:10px;" onclick="CreateTrigger('all');"><i class="fa fa-search"></i>&nbsp;批量创建触发器</button>
+        <button type="button" class="blue" style="float:right; margin-right:10px;" onclick="search();"><i class="fa fa-search"></i>&nbsp;查询</button>
         <div class="clear"></div>
     </div>
 
@@ -51,6 +54,8 @@
 </body>
 </html>
 <script type="text/javascript">
+    var timestamp = new Date().getTime();
+
     $(function () {
         queryList(1);
         //回车事件
@@ -62,10 +67,26 @@
         };
     });
     function Edit(tableName) {
-        $.Dialog('/System/TableColumnList.html?tableName=' + tableName, "Column", 800, 600);
+        $.Dialog('/System/TableColumnList.html?tableName=' + tableName + "&r=" + timestamp, "Column", 800, 600);
         //parent.gotoPage('/System/TableColumnList.html?tableName=' + tableName);
     }
-    
+    function CreateTrigger(tableName) {
+        $.ajaxJson("/api/sys/table", "post", { tableName: tableName },
+            function (result) {
+                if (result.IsOk) {
+                    $("#contentheader_button").html("");
+                    $("#contentheader_button").append('&nbsp;&nbsp;<button class="yellow" onclick="ShowFile(\'trigger_' + tableName + '_insert\')" type="button"><i class="fa fa-download"></i>&nbsp;&nbsp;trigger_' + tableName + '_insert.sql</button>');
+                    $("#contentheader_button").append('&nbsp;&nbsp;<button class="yellow" onclick="ShowFile(\'trigger_' + tableName + '_update_after\')" type="button"><i class="fa fa-download"></i>&nbsp;&nbsp;trigger_' + tableName + 'update_after.sql</button>');
+                    $("#contentheader_button").append('&nbsp;&nbsp;<button class="yellow" onclick="ShowFile(\'trigger_' + tableName + '_delete\')" type="button"><i class="fa fa-download"></i>&nbsp;&nbsp;trigger_' + tableName + '_delete.sql</button>');
+                } else {
+                    $.alert(result.Message);
+                }
+            },
+            function () {
+                $.alert("网络故障，请稍候重试!");
+            });
+    }
+
     var search = function () {
         pageIndex = 1;
         queryList(1);
@@ -83,12 +104,15 @@
                     for (var i = 0; i < list.length; i++) {
                         html += "<tr " + (i % 2 == 1 ? "class='even'" : "") + ">";
                         html += '<td style="cursor:pointer" onclick="showDetailTable(this)"><i class="fa fa-plus" ></i></td>';
-                        html += "<td>" + (list[i].TABLE_NAME ? list[i].TABLE_NAME : "") + "</td>";
-                        html += "<td>" + (list[i].TABLE_ROWS ? list[i].TABLE_ROWS : "") + "</td>";
-                        html += "<td>" + (list[i].TABLE_COMMENT ? list[i].TABLE_COMMENT : "") + "</td>";
+                        html += "<td>" + (list[i].table_name ? list[i].table_name : "") + "</td>";
+                        html += "<td>" + (list[i].table_rows ? list[i].table_rows : "") + "</td>";
+                        html += "<td>" + (list[i].table_comment ? list[i].table_comment : "") + "</td>";
                         //html += "<td>" + (list[i].COLUMNS ? list[i].COLUMNS : "") + "</td>";
-                        html += "<td><a href='javascript:void(0);' onclick='Edit(\"" + list[i].TABLE_NAME + "\")' title='详情'>详情</a>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-                        html += '<td class="data-detail-td">' + (list[i].COLUMNS ? list[i].COLUMNS : "") + '</td>';
+                        html += "<td>";
+                        html += "<a href='javascript:void(0);' onclick='Edit(\"" + list[i].table_name + "\")' title='详情'>详情</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+                        html += "<a href='javascript:void(0);' onclick='CreateTrigger(\"" + list[i].table_name + "\")' title='创建触发器'>创建触发器</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+                        html += "</td>";
+                        html += '<td class="data-detail-td">' + (list[i].columns ? list[i].columns : "") + '</td>';
                         html += "</tr>";
                     }
                     $("#dataList tbody").html(html);
@@ -104,4 +128,8 @@
             }
         );
     };
+
+    function ShowFile(name) {
+        $.Dialog("/Resource/Download/Trigger/" + name + ".txt", name + ".sql", 800, 600);
+    }
 </script>
